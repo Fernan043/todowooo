@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
+    <Content Include="todo\templates\todo\currenttodos.html" />
     <Content Include="todo\templates\todo\signupuser.html" />
   </ItemGroup>
   <ItemGroup>
