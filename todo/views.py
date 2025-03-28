@@ -3,8 +3,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError #preguntar porque
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 # Create your views here.
+
+
+def home(request):
+    return render(request, 'todo/home.html')
 
 
 def signupuser(request):
@@ -26,3 +30,11 @@ def signupuser(request):
 
 def currenttodos(request):
     return render(request, 'todo/currenttodos.html')
+
+
+def logoutuser(request):
+    #este post es basicamente porque sin el despues de un login el navegador nos hecharia ya que tiene precargada dicha accion o pagina
+    if request.method == 'POST':
+        logout(request)
+        return redirect('home')
+    

@@ -46,6 +46,7 @@
     <Content Include="requirements.txt" />
     <Content Include="todo\templates\todo\base.html" />
     <Content Include="todo\templates\todo\currenttodos.html" />
+    <Content Include="todo\templates\todo\home.html" />
     <Content Include="todo\templates\todo\signupuser.html" />
   </ItemGroup>
   <ItemGroup>
