@@ -1,7 +1,12 @@
-<h1>Sing Up </h1>
- 
+{% extends 'todo/base.html' %}
 
-<h2>{{ error }} </h2>  
+{% block content %}
+
+
+<h1>Sing Up </h1>
+
+
+<h2>{{ error }} </h2>
 
 <form method="POST">
     {% csrf_token %}
@@ -9,3 +14,4 @@
     <button type="submit">Sign Up</button>
 </form>
 
+{% endblock %}
