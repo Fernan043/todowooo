@@ -38,6 +38,9 @@
     <Compile Include="todo\apps.py" />
     <Compile Include="todo\migrations\__init__.py" />
     <Compile Include="todo\models.py" />
+    <Compile Include="todo\forms.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="todo\tests.py" />
     <Compile Include="todo\views.py" />
     <Compile Include="todo\__init__.py" />
@@ -45,6 +48,7 @@
   <ItemGroup>
     <Content Include="requirements.txt" />
     <Content Include="todo\templates\todo\base.html" />
+    <Content Include="todo\templates\todo\createtodo.html" />
     <Content Include="todo\templates\todo\currenttodos.html" />
     <Content Include="todo\templates\todo\home.html" />
     <Content Include="todo\templates\todo\loginuser.html" />

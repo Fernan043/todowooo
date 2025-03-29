@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError #preguntar porque
 from django.contrib.auth import login, logout, authenticate
+from .forms import TodoForm
 # Create your views here.
 
 
@@ -48,3 +49,18 @@ def loginuser(request):
         else:
             login(request, user)
             return redirect('currenttodos')
+        
+
+def createtodo(request):
+    if request.method == 'GET':
+        return render(request, 'todo/createtodo.html',{'form':TodoForm()})
+    else:
+        try:
+            form = TodoForm(request.POST)
+            #la linea de abajo evita que se guarde en la base de datos sin antes una autorizacion el false es la clave como tal, sino se guardaria de manera automatica en BD
+            newtodo = form.save(commit=False)
+            newtodo.user = request.user
+            newtodo.save()
+            return redirect('currenttodos')
+        except ValueError:
+            return render(request, 'todo/createtodo.html',{'form':TodoForm(),'error':'Bad data pass in'})
