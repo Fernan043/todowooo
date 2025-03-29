@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.db import IntegrityError #preguntar porque
 from django.contrib.auth import login, logout, authenticate
 from .forms import TodoForm
+from .models import Todo
 # Create your views here.
 
 
@@ -30,7 +31,9 @@ def signupuser(request):
 
 
 def currenttodos(request):
-    return render(request, 'todo/currenttodos.html')
+    #esta linea declara que solo jale los todo de el usuario en especifico para que los que no correspondan a el no sea visibles
+    todos= Todo.objects.filter(user=request.user, datecompleted__isnull=True)
+    return render(request, 'todo/currenttodos.html',{'todos':todos})
 
 
 def logoutuser(request):
