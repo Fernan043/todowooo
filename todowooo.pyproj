@@ -53,6 +53,7 @@
     <Content Include="todo\templates\todo\home.html" />
     <Content Include="todo\templates\todo\loginuser.html" />
     <Content Include="todo\templates\todo\signupuser.html" />
+    <Content Include="todo\templates\todo\viewtodo.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="todowooo\" />
