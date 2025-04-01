@@ -48,6 +48,9 @@
   <ItemGroup>
     <Content Include="requirements.txt" />
     <Content Include="todo\templates\todo\base.html" />
+    <Content Include="todo\templates\todo\completetodos.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="todo\templates\todo\createtodo.html" />
     <Content Include="todo\templates\todo\currenttodos.html" />
     <Content Include="todo\templates\todo\home.html" />

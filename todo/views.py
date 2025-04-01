@@ -6,6 +6,7 @@ from django.db import IntegrityError #preguntar porque
 from django.contrib.auth import login, logout, authenticate
 from .forms import TodoForm
 from .models import Todo
+from django.utils import timezone
 # Create your views here.
 
 
@@ -77,9 +78,27 @@ def viewtodo(request, todo_pk):
     else:
         try:
             form = TodoForm(request.POST, instance=todo)
-            form.save
+            form.save()
             return redirect('currenttodos')
         except ValueError:
             return render(request, 'todo/viewtodo.html',{'todo':todo, 'form':form,'error':'bad info'})
-            
+
+
+
+def completetodo(request,todo_pk):
+    todo= get_object_or_404(Todo, pk=todo_pk, user=request.user)
+    if request.method == 'POST':
+        todo.datecompleted=timezone.now()
+        todo.save()
+        return redirect('currenttodos')
     
+def deletetodo(request,todo_pk):
+    todo= get_object_or_404(Todo, pk=todo_pk, user=request.user)
+    if request.method == 'POST':
+        todo.delete()
+        return redirect('currenttodos')
+
+def completetodos(request):
+    #esta linea declara que solo jale los todo de el usuario en especifico para que los que no correspondan a el no sea visibles
+    todos= Todo.objects.filter(user=request.user, datecompleted__isnull=False)
+    return render(request, 'todo/completetodos.html',{'todos':todos})
