@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
+    <Content Include="todo\static\todo\logo.png" />
     <Content Include="todo\templates\todo\base.html" />
     <Content Include="todo\templates\todo\completetodos.html">
       <SubType>Code</SubType>
@@ -62,6 +63,8 @@
     <Folder Include="todowooo\" />
     <Folder Include="todo\" />
     <Folder Include="todo\migrations\" />
+    <Folder Include="todo\static\" />
+    <Folder Include="todo\static\todo\" />
     <Folder Include="todo\templates\" />
     <Folder Include="todo\templates\todo\" />
   </ItemGroup>
