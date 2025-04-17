@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.db.models import Sum
 
 
 # el import de User basicamente se utiliza como clave forenea para unir dos modelos
@@ -18,6 +18,15 @@ class Todo(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     ubicacion = models.ForeignKey('Ubicacion', on_delete=models.SET_NULL, null=True, blank=True)
 
+    @property
+    def stock(self):
+        entradas = self.movimiento_set.filter(tipo='entrada') \
+                         .aggregate(total=Sum('cantidad'))['total'] or 0
+        salidas  = self.movimiento_set.filter(tipo='salida') \
+                         .aggregate(total=Sum('cantidad'))['total'] or 0
+        return entradas - salidas
+    def __str__(self):
+        return self.title
 
 class Ubicacion(models.Model):
     pasillo = models.CharField(max_length=10)
@@ -67,5 +76,3 @@ class DetalleOrdenEntrada(models.Model):
     def __str__(self):
         return f"{self.producto.title} x{self.cantidad} en Orden #{self.orden.id}"
 
-def __str__(self):
-    return self.title
