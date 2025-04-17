@@ -4,10 +4,14 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError #preguntar porque
 from django.contrib.auth import login, logout, authenticate
-from .forms import TodoForm
+from .forms import TodoForm, UbicacionForm
 from .models import Todo
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
+from django.db.models import Count
+from .forms import OrdenEntradaForm, DetalleOrdenFormSet
+from .models import OrdenEntrada, Movimiento, Ubicacion
 # Create your views here.
 
 
@@ -105,3 +109,66 @@ def completetodos(request):
     #esta linea declara que solo jale los todo de el usuario en especifico para que los que no correspondan a el no sea visibles
     todos= Todo.objects.filter(user=request.user, datecompleted__isnull=False).order_by('-datecompleted')# esta es la difencia principal ya que antes en current estos estaba en true y este es false ya que el valor cambia una vez que se genera el complete
     return render(request, 'todo/completetodos.html',{'todos':todos})
+
+
+@login_required
+def crear_ubicacion(request):
+    if request.method == 'GET':
+        return render(request, 'todo/crearubicacion.html', {
+            'form': UbicacionForm()
+        })
+    else:
+        form = UbicacionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('createtodo')      # Vuelve al formulario de crear TODO
+        else:
+            return render(request, 'todo/crearubicacion.html', {
+                'form': form,
+                'error': 'Datos invalidos al crear ubicacion.'
+            })
+
+@login_required
+def crear_orden_entrada(request):
+    if request.method == 'GET':
+        form = OrdenEntradaForm()
+        formset = DetalleOrdenFormSet()
+        return render(request, 'todo/crear_ordenentrada.html', {
+            'form': form,
+            'formset': formset
+        })
+
+    # POST
+    form = OrdenEntradaForm(request.POST)
+    formset = DetalleOrdenFormSet(request.POST)
+    if form.is_valid() and formset.is_valid():
+        with transaction.atomic():
+            orden = form.save()
+            for detalle in formset.save(commit=False):
+                detalle.orden = orden
+                detalle.save()
+
+                # 1) Registro de movimiento de entrada
+                Movimiento.objects.create(
+                    producto=detalle.producto,
+                    tipo='entrada',
+                    cantidad=detalle.cantidad
+                )
+
+                # 2) Asignación automática de ubicación si no tiene
+                prod = detalle.producto
+                if not prod.ubicacion:
+                    bodega = Ubicacion.objects.annotate(
+                        carga=Count('todo')
+                    ).order_by('carga').first()
+                    if bodega:
+                        prod.ubicacion = bodega
+                        prod.save()
+
+        return redirect('currenttodos')
+
+    # si hay errores
+    return render(request, 'todo/crear_ordenentrada.html', {
+        'form': form,
+        'formset': formset
+    })

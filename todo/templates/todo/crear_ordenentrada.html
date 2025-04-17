@@ -1,0 +1,35 @@
+{% extends "todo/base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <h2>Nueva Orden de Entrada</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <h3>Detalle de la orden</h3>
+            {{ formset.management_form }}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for f in formset.forms %}
+                    <tr>
+                        <td>{{ f.producto }}</td>
+                        <td>{{ f.cantidad }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="submit" class="btn btn-primary">Guardar Orden</button>
+            <a href="{% url 'currenttodos' %}" class="btn btn-link">? Volver al inventario</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

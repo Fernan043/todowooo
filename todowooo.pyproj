@@ -52,6 +52,12 @@
     <Content Include="todo\templates\todo\completetodos.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="todo\templates\todo\crearubicacion.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="todo\templates\todo\crear_ordenentrada.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="todo\templates\todo\createtodo.html" />
     <Content Include="todo\templates\todo\currenttodos.html" />
     <Content Include="todo\templates\todo\home.html" />

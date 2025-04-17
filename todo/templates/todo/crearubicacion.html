@@ -1,0 +1,18 @@
+﻿{% extends "todo/base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <h2>Nueva Ubicación</h2>
+        {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Guardar Ubicacion</button>
+        </form>
+        <a href="{% url 'createtodo' %}" class="btn btn-link mt-3">← Volver a crear producto</a>
+    </div>
+</div>
+{% endblock %}
+

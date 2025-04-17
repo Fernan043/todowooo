@@ -1,5 +1,7 @@
 from django.forms import ModelForm
-from .models import Todo
+from django.forms.models import inlineformset_factory 
+from .models import Todo,Ubicacion
+from .models import OrdenEntrada, DetalleOrdenEntrada
 
 
 # esto basicamente funciona para crear un tipo de formulario
@@ -9,5 +11,22 @@ from .models import Todo
 class TodoForm(ModelForm):
     class Meta:
         model = Todo
-        fields =['title','memo','important']
+        fields =['title','memo','important','ubicacion']
     
+class UbicacionForm(ModelForm):
+    class Meta:
+        model = Ubicacion
+        fields = ['pasillo', 'estante', 'descripcion']
+
+class OrdenEntradaForm(ModelForm):
+    class Meta:
+        model = OrdenEntrada
+        fields = ['proveedor', 'descripcion']
+
+DetalleOrdenFormSet = inlineformset_factory(
+    OrdenEntrada,
+    DetalleOrdenEntrada,
+    fields=['producto', 'cantidad'],
+    extra=1,
+    can_delete=False
+)

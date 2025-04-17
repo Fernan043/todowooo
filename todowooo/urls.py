@@ -37,5 +37,7 @@ urlpatterns = [
     path('todo/<int:todo_pk>', views.viewtodo, name='viewtodo'),
     path('todo/<int:todo_pk>/complete', views.completetodo, name='completetodo'),
     path('todo/<int:todo_pk>/delete', views.deletetodo, name='deletetodo'),
+    path('ubicacion/create/', views.crear_ubicacion, name='crear_ubicacion'),
+    path('ordenentrada/create/', views.crear_orden_entrada, name='crear_orden_entrada'),
 ]
 
