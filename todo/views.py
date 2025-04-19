@@ -151,14 +151,14 @@ def crear_orden_entrada(request):
                 detalle.orden = orden
                 detalle.save()
 
-                # 1) Registro de movimiento de entrada
+                #  Registro de movimiento de entrada
                 Movimiento.objects.create(
                     producto=detalle.producto,
                     tipo='entrada',
                     cantidad=detalle.cantidad
                 )
 
-                # 2) Asignación automática de ubicación si no tiene
+                #  Asignación automática de ubicación si no tiene
                 prod = detalle.producto
                 if not prod.ubicacion:
                     bodega = Ubicacion.objects.annotate(

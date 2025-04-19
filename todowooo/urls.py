@@ -29,7 +29,7 @@ urlpatterns = [
     path('logout/', views.logoutuser, name='logoutuser'),
     path('login/', views.loginuser, name='loginuser'),
 
-    #Todos
+    #Todos y rutas para colaboradores
     path('current/', views.currenttodos, name='currenttodos'),
     path('completed/', views.completetodos, name='completetodos'),
     path('', views.home, name='home'),

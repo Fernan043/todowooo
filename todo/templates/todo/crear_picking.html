@@ -1,5 +1,35 @@
 {% extends "todo/base.html" %}
 {% block content %}
+<style>
+    h2 {
+        color: #ffc107;
+    }
+    button.btn-primary {
+        background-color: #ffc107;
+        border-color: #ffc107;
+        color: #212529; 
+    }
+
+        button.btn-primary:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+    .table thead th {
+        color: #ffc107;
+        border-bottom: 2px solid #ffc107;
+    }
+
+    a.btn-link {
+        color: #ffc107;
+    }
+
+        a.btn-link:hover {
+            color: #e0a800;
+            text-decoration: none;
+        }
+</style>
+
 <div class="row justify-content-center mt-5">
     <div class="col-md-6">
         <h2>Nuevo Picking</h2>
