@@ -1,35 +1,52 @@
 {% extends "todo/base.html" %}
+
 {% block content %}
 <div class="row justify-content-center mt-5">
     <div class="col-md-8">
         <h2>Nueva Orden de Entrada</h2>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
+        <div class="card shadow-sm mt-3">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
 
-            <h3>Detalle de la orden</h3>
-            {{ formset.management_form }}
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for f in formset.forms %}
-                    <tr>
-                        <td>{{ f.producto }}</td>
-                        <td>{{ f.cantidad }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    <!-- Encabezado de la orden -->
+                    <div class="mb-3">
+                        {{ form.proveedor.label_tag }}
+                        {{ form.proveedor }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.descripcion.label_tag }}
+                        {{ form.descripcion }}
+                    </div>
 
-            <button type="submit" class="btn btn-primary">Guardar Orden</button>
-            <a href="{% url 'currenttodos' %}" class="btn btn-link">? Volver al inventario</a>
-        </form>
+                    <h3 class="mt-4">Detalle de la orden</h3>
+                    <hr>
+
+                    {{ formset.management_form }}
+                    <table class="table mb-4">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for f in formset.forms %}
+                            <tr>
+                                <td>{{ f.producto }}</td>
+                                <td>{{ f.cantidad }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">Guardar Orden</button>
+                        <a href="{% url 'currenttodos' %}" class="btn btn-link"> Volver al inventario</a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
-
