@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from sqlite3 import IntegrityError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -12,6 +14,7 @@ from django.db import transaction
 from django.db.models import Count
 from .forms import OrdenEntradaForm, DetalleOrdenFormSet
 from .models import OrdenEntrada, Movimiento, Ubicacion
+from .forms import MovimientoSalidaFormSet
 # Create your views here.
 
 
@@ -170,5 +173,45 @@ def crear_orden_entrada(request):
     # si hay errores
     return render(request, 'todo/crear_ordenentrada.html', {
         'form': form,
+        'formset': formset
+    })
+
+@login_required
+def crear_picking(request):
+    """
+    Crea un picking como una serie de movimientos tipo 'salida'.
+    Luego calcula una 'ruta' ordenada por pasillo y estante.
+    """
+    if request.method == 'GET':
+        formset = MovimientoSalidaFormSet(queryset=Movimiento.objects.none())
+        return render(request, 'todo/crear_picking.html', {
+            'formset': formset
+        })
+
+    # POST
+    formset = MovimientoSalidaFormSet(request.POST)
+    if formset.is_valid():
+        movimientos_creados = []
+        for form in formset:
+            mov = form.save(commit=False)
+            mov.tipo = 'salida'
+            mov.save()
+            movimientos_creados.append(mov)
+
+        # Construimos la ruta: ordenar por pasillo y estante de la ubicación del producto
+        ruta = sorted(
+            movimientos_creados,
+            key=lambda m: (
+                m.producto.ubicacion.pasillo if m.producto.ubicacion else '',
+                m.producto.ubicacion.estante if m.producto.ubicacion else ''
+            )
+        )
+
+        return render(request, 'todo/picking_ruta.html', {
+            'ruta': ruta
+        })
+
+    # Si hay errores, volvemos al form
+    return render(request, 'todo/crear_picking.html', {
         'formset': formset
     })

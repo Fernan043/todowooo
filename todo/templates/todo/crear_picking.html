@@ -1,0 +1,37 @@
+{% extends "todo/base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <h2>Nuevo Picking</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ formset.management_form }}
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for form in formset.forms %}
+                    <tr>
+                        <td>{{ form.producto }}</td>
+                        <td>{{ form.cantidad }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Generar Picking</button>
+                <a href="{% url 'currenttodos' %}" class="btn btn-link">Inventario</a>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+

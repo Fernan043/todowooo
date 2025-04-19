@@ -1,0 +1,41 @@
+{% extends "todo/base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <h2>Ruta de Picking</h2>
+        <table class="table table-striped mt-3">
+            <thead>
+                <tr>
+                    <th>Pasillo</th>
+                    <th>Estante</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in ruta %}
+                <tr>
+                    <td>
+                        {% if m.producto.ubicacion %}
+                        {{ m.producto.ubicacion.pasillo }}
+                        {% else %}
+                        no
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if m.producto.ubicacion %}
+                        {{ m.producto.ubicacion.estante }}
+                        {% else %}
+                        no
+                        {% endif %}
+                    </td>
+                    <td>{{ m.producto.title }}</td>
+                    <td>{{ m.cantidad }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'crear_picking' %}" class="btn btn-link"> Nueva Orden de Picking</a>
+    </div>
+</div>
+{% endblock %}

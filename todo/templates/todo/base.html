@@ -40,7 +40,9 @@
                     <li class="nav-item {{ ordenentrada }}">
                         <a class="nav-link" href="{% url 'crear_orden_entrada' %}">Orden Entrada</a>
                     </li>
-
+                    <li class="nav-item {{ picking }}">
+                        <a class="nav-link" href="{% url 'crear_picking' %}">Picking</a>
+                    </li>
                 </ul>
                 {% endif %}
                 <ul class="navbar-nav ml-auto">

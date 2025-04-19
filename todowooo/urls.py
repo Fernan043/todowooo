@@ -39,5 +39,6 @@ urlpatterns = [
     path('todo/<int:todo_pk>/delete', views.deletetodo, name='deletetodo'),
     path('ubicacion/create/', views.crear_ubicacion, name='crear_ubicacion'),
     path('ordenentrada/create/', views.crear_orden_entrada, name='crear_orden_entrada'),
+    path('picking/create/', views.crear_picking, name='crear_picking'),
 ]
 

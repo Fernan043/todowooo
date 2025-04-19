@@ -1,8 +1,9 @@
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory 
+from django.forms import modelformset_factory
 from .models import Todo,Ubicacion
 from .models import OrdenEntrada, DetalleOrdenEntrada
-
+from .models import Movimiento
 
 # esto basicamente funciona para crear un tipo de formulario
 #jalando la informacion de un obejeto presente en base de datos
@@ -27,6 +28,19 @@ DetalleOrdenFormSet = inlineformset_factory(
     OrdenEntrada,
     DetalleOrdenEntrada,
     fields=['producto', 'cantidad'],
+    extra=1,
+    can_delete=False
+)
+
+class MovimientoSalidaForm(ModelForm):
+    class Meta:
+        model  = Movimiento
+        fields = ['producto', 'cantidad']
+        # No se  incluye 'tipo' ni 'fecha' ya que  tipo lo fijaremos a 'salida' en la vista
+
+MovimientoSalidaFormSet = modelformset_factory(
+    Movimiento,
+    form=MovimientoSalidaForm,
     extra=1,
     can_delete=False
 )

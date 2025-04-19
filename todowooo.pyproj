@@ -58,10 +58,16 @@
     <Content Include="todo\templates\todo\crear_ordenentrada.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="todo\templates\todo\crear_picking.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="todo\templates\todo\createtodo.html" />
     <Content Include="todo\templates\todo\currenttodos.html" />
     <Content Include="todo\templates\todo\home.html" />
     <Content Include="todo\templates\todo\loginuser.html" />
+    <Content Include="todo\templates\todo\picking_ruta.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="todo\templates\todo\signupuser.html" />
     <Content Include="todo\templates\todo\viewtodo.html" />
   </ItemGroup>
