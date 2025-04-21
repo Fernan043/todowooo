@@ -1,0 +1,71 @@
+{% extends "todo/base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <h2 style="color:#ffc107">Programar Despacho</h2>
+
+        <table class="table table-bordered mt-3">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Pasillo</th>
+                    <th>Estante</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in ruta %}
+                <tr>
+                    <td>{{ m.producto.title }}</td>
+                    <td>{{ m.cantidad }}</td>
+                    <td>
+                        {% if m.producto.ubicacion %}
+                        {{ m.producto.ubicacion.pasillo }}
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if m.producto.ubicacion %}
+                        {{ m.producto.ubicacion.estante }}
+                        {% else %}
+                        N/A
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+            {% for id in movimientos_ids %}
+            <input type="hidden" name="movimientos" value="{{ id }}">
+            {% endfor %}
+
+            <div class="mb-3">
+                <label for="proveedor">Transportista</label>
+                <select name="proveedor" id="proveedor" class="form-control" required>
+                    <option value="">Seleccione</option>
+                    {% for p in proveedores %}
+                    <option value="{{ p.id }}">{{ p.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <label for="fecha">Fecha</label>
+                    <input type="date" name="fecha" id="fecha" class="form-control" required>
+                </div>
+                <div class="col">
+                    <label for="hora">Hora</label>
+                    <input type="time" name="hora" id="hora" class="form-control" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-warning">Confirmar Despacho</button>
+            <a href="{% url 'crear_picking' %}" class="btn btn-link">Volver</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

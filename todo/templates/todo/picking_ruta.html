@@ -39,14 +39,14 @@
                         {% if m.producto.ubicacion %}
                         {{ m.producto.ubicacion.pasillo }}
                         {% else %}
-                        no
+                        None
                         {% endif %}
                     </td>
                     <td>
                         {% if m.producto.ubicacion %}
                         {{ m.producto.ubicacion.estante }}
                         {% else %}
-                        no
+                        None
                         {% endif %}
                     </td>
                     <td>{{ m.producto.title }}</td>
@@ -55,7 +55,16 @@
                 {% endfor %}
             </tbody>
         </table>
-        <a href="{% url 'crear_picking' %}" class="btn btn-link"> Nueva Orden de Picking</a>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{% url 'crear_picking' %}" class="btn btn-link">
+                 Nueva Orden de Picking
+            </a>
+            <a href="{% url 'programar_despacho' %}?{% for m in ruta %}movimientos={{ m.id }}{% if not forloop.last %}&{% endif %}{% endfor %}"
+               class="btn btn-warning">
+                Programar Despacho
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %}

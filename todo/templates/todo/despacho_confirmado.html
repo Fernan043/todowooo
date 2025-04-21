@@ -1,0 +1,13 @@
+{% extends "todo/base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 text-center">
+        <h2 style="color:#ffc107"> Despacho Asignado</h2>
+        <p><strong>Transportista:</strong> {{ proveedor.nombre }}</p>
+        <p><strong>Fecha y hora:</strong> {{ fecha }} {{ hora }}</p>
+        <a href="{% url 'currenttodos' %}" class="btn btn-primary mt-3">
+            Volver al Inventario
+        </a>
+    </div>
+</div>
+{% endblock %}

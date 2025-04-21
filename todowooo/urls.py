@@ -40,5 +40,6 @@ urlpatterns = [
     path('ubicacion/create/', views.crear_ubicacion, name='crear_ubicacion'),
     path('ordenentrada/create/', views.crear_orden_entrada, name='crear_orden_entrada'),
     path('picking/create/', views.crear_picking, name='crear_picking'),
+     path('picking/despacho/',  views.programar_despacho, name='programar_despacho'),
 ]
 

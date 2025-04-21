@@ -15,6 +15,8 @@ from django.db.models import Count
 from .forms import OrdenEntradaForm, DetalleOrdenFormSet
 from .models import OrdenEntrada, Movimiento, Ubicacion
 from .forms import MovimientoSalidaFormSet
+from todo.models import Proveedor
+import datetime
 # Create your views here.
 
 
@@ -214,4 +216,33 @@ def crear_picking(request):
     # Si hay errores, volvemos al form
     return render(request, 'todo/crear_picking.html', {
         'formset': formset
+    })
+
+def programar_despacho(request):
+    if request.method == 'GET':
+        mov_ids = request.GET.getlist('movimientos')
+        if not mov_ids:
+            # Si no vienen movimientos, volvemos a crear picking
+            return redirect('crear_picking')
+
+        ruta = Movimiento.objects.filter(pk__in=mov_ids)
+        proveedores = Proveedor.objects.all()
+        return render(request, 'todo/programar_despacho.html', {
+            'ruta': ruta,
+            'movimientos_ids': mov_ids,
+            'proveedores': proveedores,
+        })
+
+    # POST: confirmación de despacho
+    mov_ids = request.POST.getlist('movimientos')
+    ruta = Movimiento.objects.filter(pk__in=mov_ids)
+    proveedor = get_object_or_404(Proveedor, pk=request.POST['proveedor'])
+    fecha = request.POST['fecha']
+    hora  = request.POST['hora']
+
+    return render(request, 'todo/despacho_confirmado.html', {
+        'ruta': ruta,
+        'proveedor': proveedor,
+        'fecha': fecha,
+        'hora': hora,
     })

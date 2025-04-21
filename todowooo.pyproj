@@ -63,9 +63,15 @@
     </Content>
     <Content Include="todo\templates\todo\createtodo.html" />
     <Content Include="todo\templates\todo\currenttodos.html" />
+    <Content Include="todo\templates\todo\despacho_confirmado.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="todo\templates\todo\home.html" />
     <Content Include="todo\templates\todo\loginuser.html" />
     <Content Include="todo\templates\todo\picking_ruta.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="todo\templates\todo\programar_despacho.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="todo\templates\todo\signupuser.html" />
