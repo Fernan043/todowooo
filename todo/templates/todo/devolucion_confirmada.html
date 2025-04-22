@@ -1,0 +1,17 @@
+{% extends "todo/base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <h2 style="color:#ffc107">Devoluciones Procesadas</h2>
+        <ul class="list-group">
+            {% for mov in movimientos %}
+            <li class="list-group-item">
+                {{ mov.get_tipo_display }} de {{ mov.producto.title }} ({{ mov.cantidad }})
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'currenttodos' %}" class="btn btn-primary mt-3">Volver al Inventario</a>
+    </div>
+</div>
+{% endblock %}
+

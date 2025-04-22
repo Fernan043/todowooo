@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError #preguntar porque
 from django.contrib.auth import login, logout, authenticate
+from .forms import DevolucionFormSet
 from .forms import TodoForm, UbicacionForm
 from .models import Todo
 from django.utils import timezone
@@ -245,4 +246,57 @@ def programar_despacho(request):
         'proveedor': proveedor,
         'fecha': fecha,
         'hora': hora,
+    })
+
+@login_required
+def crear_devolucion(request):
+    if request.method == 'GET':
+        formset = DevolucionFormSet()
+        for form in formset:
+            form.fields['producto'].queryset = Todo.objects.filter(user=request.user)
+        return render(request, 'todo/crear_devolucion.html', {
+            'formset': formset,
+            'devoluciones': 'active',
+        })
+
+    formset = DevolucionFormSet(request.POST)
+    for form in formset:
+        form.fields['producto'].queryset = Todo.objects.filter(user=request.user)
+
+    if formset.is_valid():
+        movimientos = []
+        for form in formset:
+            prod   = form.cleaned_data['producto']
+            qty    = form.cleaned_data['cantidad']
+            defect = form.cleaned_data['defectuoso']
+
+            if defect:
+                # Registro como salida (sale del inventario)
+                mov = Movimiento.objects.create(
+                    producto=prod, tipo='salida', cantidad=qty
+                )
+                # reasignamos sólo la ubicación a "Inspección"
+                insp, _ = Ubicacion.objects.get_or_create(
+                    pasillo='XX', estante='XX',
+                    defaults={'descripcion':'Area de inspeccion'}
+                )
+                prod.ubicacion = insp
+                prod.save()
+            else:
+                # Registro como entrada (regresa al inventario)
+                mov = Movimiento.objects.create(
+                    producto=prod, tipo='entrada', cantidad=qty
+                )
+                # nada más, el stock dinámico sube solo
+
+            movimientos.append(mov)
+
+        return render(request, 'todo/devolucion_confirmada.html', {
+            'movimientos': movimientos,
+        })
+
+    return render(request, 'todo/crear_devolucion.html', {
+        'formset': formset,
+        'devoluciones': 'active',
+        'error': 'Corrige los errores en el formulario.'
     })

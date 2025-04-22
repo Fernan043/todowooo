@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from django.forms.models import inlineformset_factory 
 from django.forms import modelformset_factory
+from django import forms
 from .models import Todo,Ubicacion
 from .models import OrdenEntrada, DetalleOrdenEntrada
 from .models import Movimiento
@@ -44,3 +45,12 @@ MovimientoSalidaFormSet = modelformset_factory(
     extra=1,
     can_delete=False
 )
+
+class DevolucionForm(forms.Form):
+    producto = forms.ModelChoiceField(queryset=Todo.objects.none(), label="Producto")
+    cantidad = forms.IntegerField(min_value=1, label="Cantidad")
+    defectuoso = forms.BooleanField(required=False, label="Defectuoso")
+
+# Un FormSet para poder procesar varias devoluciones a la vez
+from django.forms import formset_factory
+DevolucionFormSet = formset_factory(DevolucionForm, extra=1)
