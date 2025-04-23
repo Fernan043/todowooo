@@ -42,5 +42,9 @@ urlpatterns = [
     path('picking/create/', views.crear_picking, name='crear_picking'),
      path('picking/despacho/',  views.programar_despacho, name='programar_despacho'),
      path('devoluciones/create/', views.crear_devolucion, name='crear_devolucion'),
+      path('reportes/movimientos/', views.reporte_movimientos,    name='reporte_movimientos'),
+    path('reportes/movimientos/pdf/', views.reporte_movimientos_pdf, name='reporte_movimientos_pdf'),
+    path('reportes/productos/',   views.reporte_productos,      name='reporte_productos'),
+    path('reportes/productos/pdf/',   views.reporte_productos_pdf,    name='reporte_productos_pdf'),
 ]
 

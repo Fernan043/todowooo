@@ -13,6 +13,9 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.db.models import Count
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from django.http import HttpResponse
 from .forms import OrdenEntradaForm, DetalleOrdenFormSet
 from .models import OrdenEntrada, Movimiento, Ubicacion
 from .forms import MovimientoSalidaFormSet
@@ -287,7 +290,7 @@ def crear_devolucion(request):
                 mov = Movimiento.objects.create(
                     producto=prod, tipo='entrada', cantidad=qty
                 )
-                # nada más, el stock dinámico sube solo
+                
 
             movimientos.append(mov)
 
@@ -300,3 +303,60 @@ def crear_devolucion(request):
         'devoluciones': 'active',
         'error': 'Corrige los errores en el formulario.'
     })
+
+@login_required
+def reporte_movimientos(request):
+    movimientos = Movimiento.objects.all().order_by('-fecha')
+    return render(request, 'todo/reporte_movimientos.html', {
+        'movimientos': movimientos
+    })
+
+@login_required
+def reporte_movimientos_pdf(request):
+    # Genera un Response PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="movimientos.pdf"'
+    p = canvas.Canvas(response, pagesize=letter)
+    y = 750
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(200, y, "Reporte de Movimientos")
+    y -= 30
+    p.setFont("Helvetica", 10)
+    for m in Movimiento.objects.all().order_by('fecha'):
+        line = f"{m.fecha.strftime('%Y-%m-%d %H:%M')}  |  {m.get_tipo_display():7}  |  {m.producto.title:20}  |  {m.cantidad}"
+        p.drawString(40, y, line)
+        y -= 15
+        if y < 50:
+            p.showPage()
+            y = 750
+    p.showPage()
+    p.save()
+    return response
+
+@login_required
+def reporte_productos(request):
+    productos = Todo.objects.all().order_by('title')
+    return render(request, 'todo/reporte_productos.html', {
+        'productos': productos
+    })
+
+@login_required
+def reporte_productos_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="productos.pdf"'
+    p = canvas.Canvas(response, pagesize=letter)
+    y = 750
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(220, y, "Reporte de Productos")
+    y -= 30
+    p.setFont("Helvetica", 10)
+    for prod in Todo.objects.all().order_by('title'):
+        line = f"{prod.title:20}  |  Stock: {prod.stock:5}  |  Ubicacion: {prod.ubicacion or 'None'}"
+        p.drawString(40, y, line)
+        y -= 15
+        if y < 50:
+            p.showPage()
+            y = 750
+    p.showPage()
+    p.save()
+    return response

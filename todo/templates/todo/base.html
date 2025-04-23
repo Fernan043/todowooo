@@ -46,6 +46,13 @@
                     <li class="nav-item {{ devoluciones }}">
                         <a class="nav-link" href="{% url 'crear_devolucion' %}">Devoluciones</a>
                     </li>
+                    <li class="nav-item {{ reporte_movimientos }}">
+                        <a class="nav-link" href="{% url 'reporte_movimientos' %}">Reporte Mov.</a>
+                    </li>
+                    <li class="nav-item {{ reporte_productos }}">
+                        <a class="nav-link" href="{% url 'reporte_productos' %}">Reporte Prod.</a>
+                    </li>
+
                 </ul>
                 {% endif %}
                 <ul class="navbar-nav ml-auto">

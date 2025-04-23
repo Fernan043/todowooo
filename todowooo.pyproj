@@ -80,6 +80,12 @@
     <Content Include="todo\templates\todo\programar_despacho.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="todo\templates\todo\reporte_movimientos.html">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="todo\templates\todo\reporte_productos.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="todo\templates\todo\signupuser.html" />
     <Content Include="todo\templates\todo\viewtodo.html" />
   </ItemGroup>

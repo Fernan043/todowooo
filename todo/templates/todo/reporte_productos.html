@@ -1,0 +1,31 @@
+{% extends "todo/base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Reporte de Productos</h2>
+    <a href="{% url 'reporte_productos_pdf' %}" class="btn btn-warning mb-3">Descargar PDF</a>
+    <table class="table table-bordered">
+        <thead class="table-warning">
+            <tr>
+                <th>Producto</th>
+                <th>Stock</th>
+                <th>Ubicacion</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prod in productos %}
+            <tr>
+                <td>{{ prod.title }}</td>
+                <td>{{ prod.stock }}</td>
+                <td>
+                    {% if prod.ubicacion %}
+                    {{ prod.ubicacion }}
+                    {% else %}
+                    sin asignar
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
